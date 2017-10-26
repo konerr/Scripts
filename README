@@ -1,0 +1,12 @@
+This repo is a collection of scripts for post-processing.
+
+- CMT-nek: Contains scripts related to convergence studies and
+profile plots for Sod shocktube and Shu-Osher test cases.
+
+- PV: Contains Paraview trace scripts used to generate movies
+for 2D & 3D shktb.
+
+- Skhtb: Contains scripts to generate particle front locations (PF)
+and plot avg and rms profiles of fixed particle bed simulations (AvSD).
+
+
