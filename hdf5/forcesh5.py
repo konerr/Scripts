@@ -1,49 +1,43 @@
 #!/usr/bin/python
 
-import matplotlib.pyplot as plt
+#-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.-.
+
+# File Name : forcesh5.py
+
+# Purpose : Open force files and copy 
+#           data to a hdf5 file.
+#           File attributes have to be 
+#           set manually.
+
+# Creation Date : 05-15-2018
+
+# Last Modified :
+
+# Created By : Rahul Koneru 
+
+#_._._._._._._._._._._._._._._._._._._._._.
+
 import numpy as np
-import sys
 import os,glob
 import h5py as h5
-from itertools import islice
-
-Ms = 3.0 ;
-p = 101325 ;
-rho = 1.2048 ;
-gamma = 1.4 ;
-R = 287.0
-us = Ms*np.sqrt(gamma*p/rho) ;
-dp = 100E-6 ;
-tau = dp/us ;
-x_shock = 0.12
-x_curt = 0.15
-curt_width = 3.5e-3
-phi = 0.10
-rho2 = 4.64670
-p2 = 1047025.0
-u2 = 7.625535638079468E+02
-
-phis = [10.0,15.0,20.0,25.0]
+#from itertools import islice
 
 mes10 = glob.glob('Mesoscale/NoFluc/tests/dp5mic/*forces*')
-#mes10_dp5 = sorted(mes10, key=lambda time: float(time[-11:]))
-
-#files = [mes10_dp5]
 files = sorted(mes10, key=lambda time: float(time[-11:]))
 
 def readTime():
-    print(line)
+#    print(line)  # Uncomment for debugging
     varOut = float(next(ffile))
     varOut = varOut #*1e6
     return varOut
 
 def readDim():
-    print(line)
+#    print(line)  # Uncomment for debugging
     varOut = int((next(ffile).split())[0])
     return varOut
 
 def readData():
-    print(line)
+#    print(line)  # Uncomment for debugging
     varOut = np.zeros((arrDim)) 
     for k in range(0,int(arrDim/5)):
         tmp = ((next(ffile).split(',')))
@@ -71,6 +65,7 @@ def writeh5file(grp_name):
     grp.create_dataset('Ftot', data=np.transpose([fx,fy,fz]))
     hf.close()
 
+# Need to set 'dp' and 'dx' manually
 def set_attrs():
     hf = h5.File('forces2.hdf5','a')
     hf.attrs['npcls'] = arrDim
@@ -78,12 +73,10 @@ def set_attrs():
     hf.attrs['dx'] = 10E-6
     hf.close()
 
-cst = 1
 k = 0
 for indx, i in enumerate(files[:]):
 
     print (i)
-#    with open(i[indx],'r') as ffile:
     with open(i,'r') as ffile:
         for count, line in enumerate(ffile):
             if line.startswith('# Physical time'):
